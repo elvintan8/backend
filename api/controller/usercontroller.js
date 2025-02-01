@@ -4,10 +4,15 @@ require("dotenv/config");
 const jwt = require("jsonwebtoken");
 
 const signToken = (id) => {
+  if (!process.env.JWT_KEY_SECRET) {
+    throw new Error("JWT_KEY_SECRET is not defined");
+  }
+
   return jwt.sign({ id }, process.env.JWT_KEY_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: process.env.JWT_EXPIRES_IN || "5h",
   });
 };
+
 
 const userregister = async (req, res) => {
   try {
